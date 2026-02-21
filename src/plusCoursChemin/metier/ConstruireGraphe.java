@@ -16,7 +16,7 @@ public class ConstruireGraphe
 		ArrayList<Arc> lstArc = new ArrayList<>();
 		String ligne,nomSource, nomDest;
 		Sommet source, dest;
-		int indexSommet,cout, nbSommets, nbArcs; 
+		int indexSommet,cout; 
 		Arc arc;
 
 		
