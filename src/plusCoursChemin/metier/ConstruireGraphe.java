@@ -1,6 +1,7 @@
 package plusCoursChemin.metier;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,12 +62,13 @@ public class ConstruireGraphe
 
 			sc.close();
 
+			graphe.setHashSommet(hashSommet);
 			graphe.setNbSommets( hashSommet.size());
 			graphe.setNbArcs(lstArc.size());
 			graphe.setLstArcs(lstArc);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			System.out.println("fichier non trouvée");
 		}
 
 		return graphe;

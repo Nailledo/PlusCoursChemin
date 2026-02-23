@@ -3,5 +3,4 @@ src/plusCoursChemin/metier/Arc.java
 src/plusCoursChemin/metier/BellmanFord.java
 src/plusCoursChemin/metier/ConstruireGraphe.java
 src/plusCoursChemin/metier/Graphe.java
-src/plusCoursChemin/metier/Noeud.java
 src/plusCoursChemin/metier/Sommet.java
