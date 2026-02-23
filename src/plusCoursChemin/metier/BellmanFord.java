@@ -6,6 +6,7 @@ public class BellmanFord
 {
 	private int numSommetSource;
 	private Graphe graphe;
+	private int[] distances;
 
 	public BellmanFord (Graphe g, int numSommetSource)
 	{
@@ -15,7 +16,7 @@ public class BellmanFord
 
 	public void algo()
 	{
-		int[]  distances = new int[this.graphe.getNbSommets()];
+		distances = new int[this.graphe.getNbSommets()];
 		ArrayList<Arc> lstArcs = new ArrayList<>(this.graphe.getLstArcs());
 		Arc	arc;
 		int source, dest, cout;
@@ -63,7 +64,7 @@ public class BellmanFord
 		}	
 	}
 
-
+	public int[] getDistances() { return distances; }
 
 
 }

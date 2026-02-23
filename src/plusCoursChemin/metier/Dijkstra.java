@@ -8,6 +8,8 @@ public class Dijkstra
     private Graphe g;
     private Sommet s;
 
+    private int[]  distances;
+
     // w c'est la matrice des coûts, deja effctuée dans Arc.getCout()
     public Dijkstra(Graphe g, Sommet s)
     {
@@ -17,7 +19,7 @@ public class Dijkstra
 
     public void algo()
     {
-        int[] distances = new int[this.g.getNbSommets()];
+        distances = new int[this.g.getNbSommets()];
 
         // Initialisation
         for (int i = 0; i < distances.length; i++)
@@ -82,4 +84,6 @@ public class Dijkstra
             System.out.println("Le sommet " + v.getNom() + " est à " + dist + " de " + this.s.getNom() );
         }
     }
+
+    public int[] getDistances() { return distances; }
 }
