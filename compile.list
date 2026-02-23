@@ -4,3 +4,4 @@ src/plusCoursChemin/metier/BellmanFord.java
 src/plusCoursChemin/metier/ConstruireGraphe.java
 src/plusCoursChemin/metier/Graphe.java
 src/plusCoursChemin/metier/Sommet.java
+src/plusCoursChemin/metier/Dijkstra.java
