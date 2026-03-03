@@ -20,32 +20,22 @@ public class Controleur
 
 		// CUI
         this.dijkstra.algo();
-        this.bellmanFord.algo();
+        this.bellmanFord.algo();       
 
-
-        // Données Dijkstra
-        int[]      distD           = this.dijkstra.getDistances();
-        String[][] donneesDijkstra = new String[this.graphe.getNbSommets()][2];
-        for (int i = 0; i < this.graphe.getNbSommets(); i++)
-        {
-            donneesDijkstra[i][0] = this.graphe.getSommetParIndice(i).getNom();
-            donneesDijkstra[i][1] = (distD[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distD[i]);
-        }
-
-        // Données Bellman-Ford
-        int[]      distB              = this.bellmanFord.getDistances();
-        String[][] donneesBellmanFord = new String[this.graphe.getNbSommets()][2];
-        for (int i = 0; i < this.graphe.getNbSommets(); i++)
-        {
-            donneesBellmanFord[i][0] = this.graphe.getSommetParIndice(i).getNom();
-            donneesBellmanFord[i][1] = (distB[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distB[i]);
-        }
-
-        new FrameGraphe(donneesDijkstra, donneesBellmanFord );
+        new FrameGraphe( this );
     }
 
     public static void main(String[] args) 
     {
         new Controleur();
     }
+
+	public String[][] getDonneesB()
+	{
+		return this.bellmanFord.getDonneesB();
+	}
+	public String[][] getDonneesD()
+	{
+		return this.dijkstra.getDonneesD();
+	}
 }

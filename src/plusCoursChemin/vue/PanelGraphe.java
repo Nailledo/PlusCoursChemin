@@ -3,14 +3,17 @@ package plusCoursChemin.vue;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import plusCoursChemin.Controleur;
 
 public class PanelGraphe extends JPanel 
 {
 	private GrapheStream graphe;
+	private Controleur ctrl;
 
-    public PanelGraphe(String[][] donneesD, String[][] donneesB )
+    public PanelGraphe( Controleur ctrl )
     {
-		this.graphe = new GrapheStream(donneesB, donneesD);
+		this.ctrl = ctrl;
+		this.graphe = new GrapheStream( this.ctrl );
 
         String[] colonnes = { "Sommet", "Distance" };
 
@@ -18,10 +21,10 @@ public class PanelGraphe extends JPanel
 
         // Table Dijkstra
         JLabel lblDijkstra   = new JLabel("Dijkstra depuis A", SwingConstants.CENTER);
-        JTable tableDijkstra = new JTable(new DefaultTableModel(donneesD, colonnes));
+        JTable tableDijkstra = new JTable(new DefaultTableModel(this.ctrl.getDonneesD(), colonnes));
 
 		JPanel panelDroite = new JPanel(new GridLayout(1, 2));
-		JPanel panelGauche = new JPanel(new BorderLayout());
+		JPanel panelGauche = new JPanel(new GridLayout(1, 2));
 
         JPanel panelD = new JPanel(new BorderLayout());
 
@@ -30,7 +33,7 @@ public class PanelGraphe extends JPanel
 
         // Table Bellman-Ford
         JLabel lblBellman = new JLabel("Bellman-Ford depuis A", SwingConstants.CENTER);
-        JTable tableBellman = new JTable(new DefaultTableModel(donneesB, colonnes));
+        JTable tableBellman = new JTable(new DefaultTableModel(this.ctrl.getDonneesB(), colonnes));
         JPanel panelB = new JPanel(new BorderLayout());
         panelB.add(lblBellman, BorderLayout.NORTH);
         panelB.add(new JScrollPane(tableBellman), BorderLayout.CENTER);

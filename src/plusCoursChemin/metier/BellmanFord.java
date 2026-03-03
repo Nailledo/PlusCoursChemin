@@ -65,6 +65,18 @@ public class BellmanFord
 	}
 
 	public int[] getDistances() { return distances; }
+	public String[][] getDonneesB()
+	{
+		// Données Bellman-Ford
+        int[]      distB              = this.getDistances();
+        String[][] donneesBellmanFord = new String[this.graphe.getNbSommets()][2];
+        for (int i = 0; i < this.graphe.getNbSommets(); i++)
+        {
+            donneesBellmanFord[i][0] = this.graphe.getSommetParIndice(i).getNom();
+            donneesBellmanFord[i][1] = (distB[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distB[i]);
+        }
+		return donneesBellmanFord;
+	}
 
 
 }

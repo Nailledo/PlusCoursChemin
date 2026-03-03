@@ -86,4 +86,16 @@ public class Dijkstra
     }
 
     public int[] getDistances() { return distances; }
+	public String[][] getDonneesD()
+	{
+		// Données Dijkstra
+        int[]      distD           = this.getDistances();
+        String[][] donneesDijkstra = new String[this.g.getNbSommets()][2];
+        for (int i = 0; i < this.g.getNbSommets(); i++)
+        {
+            donneesDijkstra[i][0] = this.g.getSommetParIndice(i).getNom();
+            donneesDijkstra[i][1] = (distD[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distD[i]);
+        }
+		return donneesDijkstra;
+	}
 }
