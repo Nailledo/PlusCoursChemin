@@ -19,8 +19,8 @@ public class Controleur
         this.bellmanFord = new BellmanFord(graphe, 0);
 
 		// CUI
-        // this.dijkstra.algo();
-        // this.bellmanFord.algo();
+        this.dijkstra.algo();
+        this.bellmanFord.algo();
 
 
         // Données Dijkstra
@@ -29,7 +29,7 @@ public class Controleur
         for (int i = 0; i < this.graphe.getNbSommets(); i++)
         {
             donneesDijkstra[i][0] = this.graphe.getSommetParIndice(i).getNom();
-            donneesDijkstra[i][1] = (distD[i] == Integer.MAX_VALUE) ? "+INFINI" : String.valueOf(distD[i]);
+            donneesDijkstra[i][1] = (distD[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distD[i]);
         }
 
         // Données Bellman-Ford
@@ -38,7 +38,7 @@ public class Controleur
         for (int i = 0; i < this.graphe.getNbSommets(); i++)
         {
             donneesBellmanFord[i][0] = this.graphe.getSommetParIndice(i).getNom();
-            donneesBellmanFord[i][1] = (distB[i] == Integer.MAX_VALUE) ? "+INFINI" : String.valueOf(distB[i]);
+            donneesBellmanFord[i][1] = (distB[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distB[i]);
         }
 
         new FrameGraphe(donneesDijkstra, donneesBellmanFord );
