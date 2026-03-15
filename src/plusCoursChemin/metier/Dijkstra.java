@@ -9,23 +9,27 @@ public class Dijkstra
     private Sommet s;
 
     private int[]  distances;
+    private ArrayList<int[]> historique;
 
     // w c'est la matrice des coûts, deja effctuée dans Arc.getCout()
     public Dijkstra(Graphe g, Sommet s)
     {
         this.g = g;
         this.s = s;
+        this.historique = new ArrayList<>();
     }
 
     public void algo()
     {
         distances = new int[this.g.getNbSommets()];
+        this.historique.clear();
 
         // Initialisation
         for (int i = 0; i < distances.length; i++)
             distances[i] = Integer.MAX_VALUE;
 
         distances[this.s.getIndex()] = 0;
+        this.historique.add(distances.clone());
         // E = ensemble des sommets déjà visités
         HashSet<Sommet> E = new HashSet<>();
 
@@ -73,6 +77,8 @@ public class Dijkstra
                     }
                 }
             }
+
+            this.historique.add(distances.clone());
         }
 
         System.out.println("Distances depuis le sommet " + this.s.getNom() + " :");
@@ -85,6 +91,31 @@ public class Dijkstra
     }
 
     public int[] getDistances() { return distances; }
+
+	public String[][] getDonneesIterations()
+	{
+        int        nbSommets = this.g.getNbSommets();
+        String[][] donnees   = new String[this.historique.size()][nbSommets + 1];
+        for (int i = 0; i < this.historique.size(); i++)
+        {
+            donnees[i][0] = (i == 0) ? "Initialisation" : "Itération " + i;
+            int[] dist = this.historique.get(i);
+            for (int j = 0; j < nbSommets; j++)
+                donnees[i][j + 1] = (dist[j] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(dist[j]);
+        }
+		return donnees;
+	}
+
+	public String[] getColonnesIterations()
+	{
+        int      nbSommets = this.g.getNbSommets();
+        String[] colonnes  = new String[nbSommets + 1];
+        colonnes[0] = "";
+        for (int i = 0; i < nbSommets; i++)
+            colonnes[i + 1] = "d(" + this.g.getSommetParIndice(i).getNom() + ")";
+		return colonnes;
+	}
+
 	public String[][] getDonneesD()
 	{
         int[]      distD           = this.getDistances();

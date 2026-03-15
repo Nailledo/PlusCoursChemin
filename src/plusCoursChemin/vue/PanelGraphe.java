@@ -15,9 +15,18 @@ public class PanelGraphe extends JPanel
 
         if (ctrl.getDonneesIterations() != null)
         {
-            JPanel panelSud = new JPanel(new GridLayout(1, 2, 10, 10));
-            panelSud.add(this.creerPanelIterations(ctrl));
-            panelSud.add(this.creerPanelRelaxations(ctrl));
+            JPanel panelSud;
+            if (ctrl.getDonneesRelaxations() != null)
+            {
+                panelSud = new JPanel(new GridLayout(1, 2, 10, 10));
+                panelSud.add(this.creerPanelIterations(ctrl));
+                panelSud.add(this.creerPanelRelaxations(ctrl));
+            }
+            else
+            {
+                panelSud = new JPanel(new BorderLayout());
+                panelSud.add(this.creerPanelIterations(ctrl), BorderLayout.CENTER);
+            }
             panelSud.setPreferredSize(new Dimension(0, 150));
             this.add(panelSud, BorderLayout.SOUTH);
         }
@@ -62,7 +71,8 @@ public class PanelGraphe extends JPanel
         ));
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Itérations Bellman-Ford", SwingConstants.CENTER), BorderLayout.NORTH);
+        String nomAlgo = (ctrl.getDonneesD() != null) ? "Dijkstra" : "Bellman-Ford";
+        panel.add(new JLabel("Itérations " + nomAlgo, SwingConstants.CENTER), BorderLayout.NORTH);
         panel.add(new JScrollPane(table),                                       BorderLayout.CENTER);
         panel.setPreferredSize(new Dimension(0, 150));
         return panel;

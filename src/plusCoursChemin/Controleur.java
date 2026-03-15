@@ -77,8 +77,8 @@ public class Controleur
     public Graphe      getGraphe()                { return this.graphe;                          }
     public boolean     aCircuitAbsorbant    ()    { return ( this.bellmanFord != null ? this.bellmanFord.aCircuitAbsorbant() : false ); }
 
-    public String[][]  getDonneesIterations()     { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesIterations()  : null; }
-    public String[]    getColonnesIterations()    { return (this.bellmanFord != null) ? this.bellmanFord.getColonnesIterations() : null; }
+    public String[][]  getDonneesIterations()     { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesIterations()  : (this.dijkstra != null ? this.dijkstra.getDonneesIterations()  : null); }
+    public String[]    getColonnesIterations()    { return (this.bellmanFord != null) ? this.bellmanFord.getColonnesIterations() : (this.dijkstra != null ? this.dijkstra.getColonnesIterations() : null); }
     public String[][]  getDonneesB()              { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesB()           : null; }
     public String[][]  getDonneesD()              { return (this.dijkstra    != null) ? this.dijkstra.getDonneesD()              : null; }
     public String[][]  getDonneesRelaxations()    { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesRelaxations() : null; }

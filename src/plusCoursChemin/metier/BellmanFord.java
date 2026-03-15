@@ -35,6 +35,8 @@ public class BellmanFord
         // Relaxations
         for (int i = 0; i < nbSommets - 1; i++)
         {
+            int[] nouvellesDistances = distances.clone();
+
             for (Arc arc : lstArcs)
             {
                 int source = arc.getSource().getIndex();
@@ -42,18 +44,20 @@ public class BellmanFord
                 int cout   = arc.getCout();
 
                 if (distances[source] != Integer.MAX_VALUE &&
-                    distances[source] + cout < distances[dest])
+                    distances[source] + cout < nouvellesDistances[dest])
                 {
-                    distances[dest] = distances[source] + cout;
+                    nouvellesDistances[dest] = distances[source] + cout;
 
                     // Enregistrement de la relaxation
                     this.relaxations.add(
                         "Itération " + (i+1) + " | " +
                         arc.getSource().getNom() + " -> " + arc.getDest().getNom() +
-                        " : d(" + arc.getDest().getNom() + ") = " + distances[dest]
+                        " : d(" + arc.getDest().getNom() + ") = " + nouvellesDistances[dest]
                     );
                 }
             }
+
+            distances = nouvellesDistances;
             this.historique.add(distances.clone());
         }
 

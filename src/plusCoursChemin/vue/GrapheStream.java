@@ -25,6 +25,7 @@ public class GrapheStream
         "edge {" +
         "   text-size: 16px;" +       // Police plus grande pour les poids des arcs
         "   text-style: bold;" +      // Texte en gras
+        "   arrow-size: 12px, 8px;" + // Flèche plus visible sur les arcs orientés
         "}";
 
     public GrapheStream(Controleur ctrl)
@@ -57,7 +58,7 @@ public class GrapheStream
             String idArete = src + "-" + dest;
             if (this.graph.getEdge(idArete) == null)
             {
-                Edge edge = this.graph.addEdge(idArete, src, dest, false);
+                Edge edge = this.graph.addEdge(idArete, src, dest, true);
                 edge.setAttribute("weight",   poids);
                 edge.setAttribute("ui.label", String.valueOf(poids));
             }
