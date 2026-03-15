@@ -75,7 +75,7 @@ public class Controleur
     public static void main(String[] args) { new Controleur(); }
 
     public Graphe      getGraphe()                { return this.graphe;                          }
-    public boolean     aCircuitAbsorbant    ()    { return this.bellmanFord.aCircuitAbsorbant(); }
+    public boolean     aCircuitAbsorbant    ()    { return ( this.bellmanFord != null ? this.bellmanFord.aCircuitAbsorbant() : false ); }
 
     public String[][]  getDonneesIterations()     { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesIterations()  : null; }
     public String[]    getColonnesIterations()    { return (this.bellmanFord != null) ? this.bellmanFord.getColonnesIterations() : null; }

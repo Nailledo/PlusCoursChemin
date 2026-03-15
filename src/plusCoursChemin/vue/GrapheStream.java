@@ -65,13 +65,10 @@ public class GrapheStream
     }
 
     public View display()
-    {
-        Viewer viewer = new Viewer(this.graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-        viewer.enableAutoLayout();
-
-        View view = viewer.addDefaultView(false);
-
-        view.setMouseManager(new DefaultMouseManager());
-        return view;
-    }
+	{
+		Viewer viewer = new Viewer(this.graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+		viewer.enableAutoLayout();
+		View view = viewer.addDefaultView(false);
+		return view;
+	}
 }
