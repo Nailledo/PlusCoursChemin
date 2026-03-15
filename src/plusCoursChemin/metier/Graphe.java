@@ -21,9 +21,9 @@ public class Graphe
 	public void setLstArcs   (ArrayList<Arc> lstArcs)          {this.lstArcs = lstArcs;}
 	public void setHashSommet(HashMap<String, Sommet> hashSom) {this.hashSommet = hashSom;}
 
-	public int getNbSommets    ()      {return nbSommets;}
-	public int getNbArcs       ()      {return nbArcs;}
-	public ArrayList<Arc> getLstArcs() {return new ArrayList<>(lstArcs);}
+	public int            getNbSommets    ()      { return nbSommets;               }
+	public int            getNbArcs       ()      { return nbArcs;                  }
+	public ArrayList<Arc> getLstArcs      ()      { return new ArrayList<>(lstArcs);}
 
 	public Sommet getSommetParIndice (int index) 
 	{

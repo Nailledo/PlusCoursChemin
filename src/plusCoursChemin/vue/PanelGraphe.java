@@ -7,44 +7,43 @@ import plusCoursChemin.Controleur;
 
 public class PanelGraphe extends JPanel 
 {
-	private GrapheStream graphe;
-	private Controleur ctrl;
-
-    public PanelGraphe( Controleur ctrl )
+    public PanelGraphe(Controleur ctrl)
     {
-		this.ctrl = ctrl;
-		this.graphe = new GrapheStream( this.ctrl );
+        this.setLayout(new BorderLayout(10, 10));
 
+        this.add((JComponent) new GrapheStream(ctrl).display(), BorderLayout.CENTER);
+        this.add(this.creerPanelTables(ctrl),                   BorderLayout.EAST);
+    }
+
+    private JPanel creerPanelTables(Controleur ctrl)
+    {
         String[] colonnes = { "Sommet", "Distance" };
 
-        this.setLayout(new GridLayout(2, 1, 10, 10));
-
-        // Table Dijkstra
-        JLabel lblDijkstra   = new JLabel("Dijkstra depuis A", SwingConstants.CENTER);
-        JTable tableDijkstra = new JTable(new DefaultTableModel(this.ctrl.getDonneesD(), colonnes));
-
-		JPanel panelDroite = new JPanel(new GridLayout(1, 2));
-		JPanel panelGauche = new JPanel(new GridLayout(1, 2));
-
         JPanel panelD = new JPanel(new BorderLayout());
+        panelD.add(new JLabel("Dijkstra",     SwingConstants.CENTER), BorderLayout.NORTH);
+        if ( ctrl.getDonneesD() != null )
+            panelD.add(new JScrollPane(new JTable(new DefaultTableModel(ctrl.getDonneesD(), colonnes))), BorderLayout.CENTER);
+        else
+        {
+            panelD.add ( new JLabel("Le graphe à des arcs négatifs "), BorderLayout.CENTER );
+        }
 
-        panelD.add(lblDijkstra, BorderLayout.NORTH);
-        panelD.add(new JScrollPane(tableDijkstra), BorderLayout.CENTER);
-
-        // Table Bellman-Ford
-        JLabel lblBellman = new JLabel("Bellman-Ford depuis A", SwingConstants.CENTER);
-        JTable tableBellman = new JTable(new DefaultTableModel(this.ctrl.getDonneesB(), colonnes));
         JPanel panelB = new JPanel(new BorderLayout());
-        panelB.add(lblBellman, BorderLayout.NORTH);
-        panelB.add(new JScrollPane(tableBellman), BorderLayout.CENTER);
-
-        panelDroite.add(panelD, BorderLayout.NORTH);
-        panelDroite.add(panelB, BorderLayout.SOUTH);
-
-		panelGauche.add ( this.graphe.display() );
-
-		this.add ( panelDroite, BorderLayout.EAST );
-		this.add ( panelGauche, BorderLayout.WEST );
-
-	}
+        if ( ctrl.getDonneesB() != null )
+        {
+            panelB.add(new JLabel("Bellman-Ford", SwingConstants.CENTER), BorderLayout.NORTH);
+            panelB.add(new JScrollPane(new JTable(new DefaultTableModel(ctrl.getDonneesB(), colonnes))), BorderLayout.CENTER);
+        }
+        else
+        {
+            panelB.add ( new JLabel("Le graphe à des arcs négatifs ") );
+            panelB.add ( new JLabel("On utilise Bellman-Ford ") );
+        }
+      
+        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+        panel.add(panelD);
+        panel.add(panelB);
+        panel.setPreferredSize(new Dimension(200, 0));
+        return panel;
+    }
 }

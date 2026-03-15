@@ -21,7 +21,4 @@ public class Arc
 	public void setSource(Sommet source){this.source = source;}
 	public void setDest  (Sommet dest)  {this.dest = dest;}
 	public void setCout  (int cout)     {this.cout = cout;}
-	
-	
-	
 }

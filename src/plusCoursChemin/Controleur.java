@@ -1,5 +1,6 @@
 package plusCoursChemin;
 
+import plusCoursChemin.metier.Arc;
 import plusCoursChemin.metier.BellmanFord;
 import plusCoursChemin.metier.ConstruireGraphe;
 import plusCoursChemin.metier.Dijkstra;
@@ -14,17 +15,37 @@ public class Controleur
 
     public Controleur()
     {
-        this.graphe      = ConstruireGraphe.InitGraphe("./data/graphe.data");
-        this.dijkstra    = new Dijkstra(graphe, this.graphe.getSommetParIndice(0));
-        this.bellmanFord = new BellmanFord(graphe, 0);
-
-		// CUI
-        this.dijkstra.algo();
-        this.bellmanFord.algo();       
-
-        new FrameGraphe( this );
+        this.graphe = ConstruireGraphe.InitGraphe("./data/grapheAvecNegatif.data");
+        this.lancerAlgo();
+        new FrameGraphe(this);
     }
 
+    public void lancerAlgo()
+    {
+        if (this.aArcNegatif())
+        {
+            System.out.println("Arc négatif détecté → Bellman-Ford");
+            this.bellmanFord = new BellmanFord(this.graphe, 0);
+            this.bellmanFord.algo();
+            this.dijkstra = null;
+        }
+        else
+        {
+            System.out.println("Aucun arc négatif → Dijkstra");
+            this.dijkstra = new Dijkstra(this.graphe, this.graphe.getSommetParIndice(0));
+            this.dijkstra.algo();
+            this.bellmanFord = null;
+        }
+    }
+
+    private boolean aArcNegatif()
+    {
+        for (Arc arc : this.graphe.getLstArcs())
+            if (arc.getCout() < 0)
+                return true;
+        return false;
+    }
+    
     public static void main(String[] args) 
     {
         new Controleur();
@@ -32,10 +53,13 @@ public class Controleur
 
 	public String[][] getDonneesB()
 	{
-		return this.bellmanFord.getDonneesB();
+        if (this.bellmanFord != null) return this.bellmanFord.getDonneesB();
+		return null;
 	}
 	public String[][] getDonneesD()
 	{
-		return this.dijkstra.getDonneesD();
+        if (this.dijkstra != null) return this.dijkstra.getDonneesD();
+		return null;
 	}
+public Graphe getGraphe() { return this.graphe; }
 }

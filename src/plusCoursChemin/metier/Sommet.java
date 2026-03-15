@@ -12,25 +12,11 @@ public class Sommet
 		this.nom = nom;
 	}
 
+	public int    getIndex()          { return index; }
+	public String getNom()            { return nom;   }
 
-	public int getIndex() {
-		return index;
-	}
-
-
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
-
-	public String getNom() {
-		return nom;
-	}
-
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+	public void   setIndex(int index) { this.index = index; }
+	public void   setNom(String nom)  { this.nom   = nom;   }
 
 
 }

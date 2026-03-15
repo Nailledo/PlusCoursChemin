@@ -8,3 +8,4 @@ src/plusCoursChemin/metier/Dijkstra.java
 
 src/plusCoursChemin/vue/FrameGraphe.java
 src/plusCoursChemin/vue/PanelGraphe.java
+src/plusCoursChemin/vue/GrapheStream.java

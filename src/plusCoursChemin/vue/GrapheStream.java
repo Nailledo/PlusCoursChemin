@@ -1,48 +1,77 @@
 package plusCoursChemin.vue;
 
+import plusCoursChemin.Controleur;
+import plusCoursChemin.metier.Arc;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
-import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.Viewer; 
-import plusCoursChemin.Controleur;
+import org.graphstream.ui.view.View;
+import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.util.DefaultMouseManager;
+
+import java.util.ArrayList;
 
 public class GrapheStream 
 {
-	private Graph graph;
-	private Controleur ctrl;
+    private Graph      graph;
+    private Controleur ctrl;
 
-	public GrapheStream( Controleur ctrl )
-	{
-		this.ctrl = ctrl;
-		System.setProperty("org.graphstream.ui", "swing");
-        this.graph = new SingleGraph("Dijkstra Algorithm");
-		this.graphe();
-	}
+    // --- Définition du style CSS pour GraphStream ---
+    private String styleSheet = 
+        "node {" +
+        "   text-size: 18px;" +       // Police plus grande pour les sommets
+        "   text-style: bold;" +      // Texte en gras
+        "   size: 15px;" +            // Taille du point grossie un peu pour équilibrer
+        "}" +
+        "edge {" +
+        "   text-size: 16px;" +       // Police plus grande pour les poids des arcs
+        "   text-style: bold;" +      // Texte en gras
+        "}";
 
-	public void graphe()
-	{
-		// graph.addNode("A").setAttribute("ui.label", "A");
-
-		String[][] donneesB = this.ctrl.getDonneesB();
-
-		for (int cpt = 0; cpt < donneesB.length; cpt++) 
-		{
-			graph.addNode( donneesB[cpt][0] );
-
-		}
-	}
-
-	private void addWeightedEdge(String from, String to, double weight) 
+    public GrapheStream(Controleur ctrl)
     {
-        Edge edge = graph.addEdge(from + "-" + to, from, to, false);
-        edge.setAttribute("weight", weight);
-        edge.setAttribute("ui.label", String.valueOf(weight));
+        System.setProperty("org.graphstream.ui", "swing");
+        this.ctrl  = ctrl;
+        this.graph = new SingleGraph("Graphe");
+        
+        // Application de la feuille de style au graphe
+        this.graph.setAttribute("ui.stylesheet", styleSheet);
+        
+        this.construireGraphe();
     }
 
-	public ViewPanel display()
-	{
-		Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-		viewer.enableAutoLayout();
-		return viewer.addDefaultView(false); 
-	}
+    private void construireGraphe()
+    {
+        ArrayList<Arc> arcs = this.ctrl.getGraphe().getLstArcs();
+
+        for (Arc arc : arcs)
+        {
+            String src   = arc.getSource().getNom();
+            String dest  = arc.getDest().getNom();
+            int    poids = arc.getCout();
+
+            if (this.graph.getNode(src) == null)
+                this.graph.addNode(src).setAttribute("ui.label", src);
+            if (this.graph.getNode(dest) == null)
+                this.graph.addNode(dest).setAttribute("ui.label", dest);
+
+            String idArete = src + "-" + dest;
+            if (this.graph.getEdge(idArete) == null)
+            {
+                Edge edge = this.graph.addEdge(idArete, src, dest, false);
+                edge.setAttribute("weight",   poids);
+                edge.setAttribute("ui.label", String.valueOf(poids));
+            }
+        }
+    }
+
+    public View display()
+    {
+        Viewer viewer = new Viewer(this.graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        viewer.enableAutoLayout();
+
+        View view = viewer.addDefaultView(false);
+
+        view.setMouseManager(new DefaultMouseManager());
+        return view;
+    }
 }
