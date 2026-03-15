@@ -13,7 +13,6 @@ public class PanelGraphe extends JPanel
         this.add((JComponent) new GrapheStream(ctrl).display(), BorderLayout.CENTER);
         this.add(this.creerPanelTables(ctrl),                   BorderLayout.EAST);
 
-        // Table des itérations Bellman (si applicable)
         if (ctrl.getDonneesIterations() != null)
         {
             JPanel panelSud = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -21,6 +20,11 @@ public class PanelGraphe extends JPanel
             panelSud.add(this.creerPanelRelaxations(ctrl));
             panelSud.setPreferredSize(new Dimension(0, 150));
             this.add(panelSud, BorderLayout.SOUTH);
+        }
+
+        if ( ctrl.aCircuitAbsorbant() )
+        {
+            this.add ( new JLabel("Circuit absorbant détectée ! "), BorderLayout.NORTH );
         }
     }
 
@@ -58,8 +62,8 @@ public class PanelGraphe extends JPanel
         ));
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("It    érations Bellman-Ford", SwingConstants.CENTER), BorderLayout.NORTH);
-        panel.add(new JScrollPane(table),                                        BorderLayout.CENTER);
+        panel.add(new JLabel("Itérations Bellman-Ford", SwingConstants.CENTER), BorderLayout.NORTH);
+        panel.add(new JScrollPane(table),                                       BorderLayout.CENTER);
         panel.setPreferredSize(new Dimension(0, 150));
         return panel;
     }

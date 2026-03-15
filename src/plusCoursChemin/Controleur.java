@@ -60,7 +60,7 @@ public class Controleur
 
         if (result == JFileChooser.APPROVE_OPTION)
             return chooser.getSelectedFile().getAbsolutePath();
-        
+
         return null;
     }
 
@@ -74,10 +74,13 @@ public class Controleur
 
     public static void main(String[] args) { new Controleur(); }
 
-    public Graphe      getGraphe()                { return this.graphe; }
+    public Graphe      getGraphe()                { return this.graphe;                          }
+    public boolean     aCircuitAbsorbant    ()    { return this.bellmanFord.aCircuitAbsorbant(); }
+
     public String[][]  getDonneesIterations()     { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesIterations()  : null; }
     public String[]    getColonnesIterations()    { return (this.bellmanFord != null) ? this.bellmanFord.getColonnesIterations() : null; }
     public String[][]  getDonneesB()              { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesB()           : null; }
     public String[][]  getDonneesD()              { return (this.dijkstra    != null) ? this.dijkstra.getDonneesD()              : null; }
     public String[][]  getDonneesRelaxations()    { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesRelaxations() : null; }
+
 }

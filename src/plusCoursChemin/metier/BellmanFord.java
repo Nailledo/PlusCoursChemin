@@ -48,9 +48,9 @@ public class BellmanFord
 
                     // Enregistrement de la relaxation
                     this.relaxations.add(
-                        "It." + (i+1) + " | " +
+                        "Itération " + (i+1) + " | " +
                         arc.getSource().getNom() + " -> " + arc.getDest().getNom() +
-                        " : d[" + arc.getDest().getNom() + "] = " + distances[dest]
+                        " : d(" + arc.getDest().getNom() + ") = " + distances[dest]
                     );
                 }
             }
@@ -104,8 +104,8 @@ public class BellmanFord
         return colonnes;
     }
 
-    public boolean    hasCircuitAbsorbant() { return this.circuitAbsorbant; }
-    public int[]      getDistances()        { return this.distances; }
+    public boolean    aCircuitAbsorbant()   { return this.circuitAbsorbant; }
+    public int[]      getDistances()        { return this.distances;        } 
 
     public String[][] getDonneesB()
     {
