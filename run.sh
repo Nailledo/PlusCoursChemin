@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # Compile the Java files
-javac -d bin $(find src -name '*.java')
+javac -cp "lib/*" @compile.list -d ./bin
 
-# Run the main Java class
-java -cp bin plusCoursChemin.Controleur
+# Check if compilation succeeded
+if [ $? -eq 0 ]; then
+    java -cp "./bin:lib/*" plusCoursChemin.Controleur
+else
+    echo "Erreur de compilation!"
+fi
