@@ -1,5 +1,8 @@
 package plusCoursChemin;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import plusCoursChemin.metier.Arc;
 import plusCoursChemin.metier.BellmanFord;
 import plusCoursChemin.metier.ConstruireGraphe;
@@ -15,7 +18,8 @@ public class Controleur
 
     public Controleur()
     {
-        this.graphe = ConstruireGraphe.InitGraphe("./data/grapheAvecNegatif.data");
+        String chemin = this.choisirFichier();
+        this.graphe = ConstruireGraphe.InitGraphe(chemin);
         this.lancerAlgo();
         new FrameGraphe(this);
     }
@@ -36,6 +40,19 @@ public class Controleur
             this.dijkstra.algo();
             this.bellmanFord = null;
         }
+    }
+
+    public String choisirFichier()
+    {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("./"));
+        
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Data files", "data");
+        chooser.setFileFilter(filter);
+
+        chooser.showOpenDialog(null);
+
+        return chooser.getSelectedFile().getAbsolutePath();
     }
 
     private boolean aArcNegatif()

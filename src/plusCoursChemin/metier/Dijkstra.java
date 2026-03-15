@@ -75,7 +75,6 @@ public class Dijkstra
             }
         }
 
-        // Affichage des résultats
         System.out.println("Distances depuis le sommet " + this.s.getNom() + " :");
         for (int i = 0; i < this.g.getNbSommets(); i++)
         {
@@ -88,7 +87,6 @@ public class Dijkstra
     public int[] getDistances() { return distances; }
 	public String[][] getDonneesD()
 	{
-		// Données Dijkstra
         int[]      distD           = this.getDistances();
         String[][] donneesDijkstra = new String[this.g.getNbSommets()][2];
         for (int i = 0; i < this.g.getNbSommets(); i++)

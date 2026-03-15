@@ -67,7 +67,6 @@ public class BellmanFord
 	public int[] getDistances() { return distances; }
 	public String[][] getDonneesB()
 	{
-		// Données Bellman-Ford
         int[]      distB              = this.getDistances();
         String[][] donneesBellmanFord = new String[this.graphe.getNbSommets()][2];
         for (int i = 0; i < this.graphe.getNbSommets(); i++)
