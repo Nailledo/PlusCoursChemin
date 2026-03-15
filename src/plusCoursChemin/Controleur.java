@@ -15,13 +15,22 @@ public class Controleur
     private Graphe      graphe;
     private BellmanFord bellmanFord;
     private Dijkstra    dijkstra;
+    private FrameGraphe frame;
 
     public Controleur()
     {
         String chemin = this.choisirFichier();
+        if (chemin != null)
+        {
+            this.init(chemin);
+            this.frame = new FrameGraphe(this);
+        }
+    }
+
+    public void init(String chemin)
+    {
         this.graphe = ConstruireGraphe.InitGraphe(chemin);
         this.lancerAlgo();
-        new FrameGraphe(this);
     }
 
     public void lancerAlgo()
@@ -45,14 +54,14 @@ public class Controleur
     public String choisirFichier()
     {
         JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File("./"));
+        chooser.setCurrentDirectory(new File("./data"));
+        chooser.setFileFilter(new FileNameExtensionFilter("Data files", "data"));
+        int result = chooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION)
+            return chooser.getSelectedFile().getAbsolutePath();
         
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Data files", "data");
-        chooser.setFileFilter(filter);
-
-        chooser.showOpenDialog(null);
-
-        return chooser.getSelectedFile().getAbsolutePath();
+        return null;
     }
 
     private boolean aArcNegatif()
@@ -62,21 +71,13 @@ public class Controleur
                 return true;
         return false;
     }
-    
-    public static void main(String[] args) 
-    {
-        new Controleur();
-    }
 
-	public String[][] getDonneesB()
-	{
-        if (this.bellmanFord != null) return this.bellmanFord.getDonneesB();
-		return null;
-	}
-	public String[][] getDonneesD()
-	{
-        if (this.dijkstra != null) return this.dijkstra.getDonneesD();
-		return null;
-	}
-public Graphe getGraphe() { return this.graphe; }
+    public static void main(String[] args) { new Controleur(); }
+
+    public Graphe      getGraphe()                { return this.graphe; }
+    public String[][]  getDonneesIterations()     { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesIterations()  : null; }
+    public String[]    getColonnesIterations()    { return (this.bellmanFord != null) ? this.bellmanFord.getColonnesIterations() : null; }
+    public String[][]  getDonneesB()              { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesB()           : null; }
+    public String[][]  getDonneesD()              { return (this.dijkstra    != null) ? this.dijkstra.getDonneesD()              : null; }
+    public String[][]  getDonneesRelaxations()    { return (this.bellmanFord != null) ? this.bellmanFord.getDonneesRelaxations() : null; }
 }

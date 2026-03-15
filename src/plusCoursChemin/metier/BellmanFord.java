@@ -4,78 +4,117 @@ import java.util.ArrayList;
 
 public class BellmanFord 
 {
-	private int numSommetSource;
-	private Graphe graphe;
-	private int[] distances;
+    private Graphe            graphe;
+    private int               numSommetSource;
+    private int[]             distances;
+    private boolean           circuitAbsorbant;
+    private ArrayList<int[]>  historique;
+    private ArrayList<String> relaxations;
 
-	public BellmanFord (Graphe g, int numSommetSource)
-	{
-		this.graphe = g;
-		this.numSommetSource = numSommetSource;	
-	}
+    public BellmanFord(Graphe g, int numSommetSource)
+    {
+        this.graphe           = g;
+        this.numSommetSource  = numSommetSource;
+        this.circuitAbsorbant = false;
+        this.historique       = new ArrayList<>();
+        this.relaxations      = new ArrayList<>();
+    }
 
-	public void algo()
-	{
-		distances = new int[this.graphe.getNbSommets()];
-		ArrayList<Arc> lstArcs = new ArrayList<>(this.graphe.getLstArcs());
-		Arc	arc;
-		int source, dest, cout;
-		String nomSommet;
+    public void algo()
+    {
+        int            nbSommets = this.graphe.getNbSommets();
+        ArrayList<Arc> lstArcs   = this.graphe.getLstArcs();
 
-		for (int i = 0; i < distances.length; i++) 
-			distances[i] = Integer.MAX_VALUE;
+        // Initialisation
+        distances = new int[nbSommets];
+        for (int i = 0; i < nbSommets; i++)
+            distances[i] = Integer.MAX_VALUE;
+        distances[this.numSommetSource] = 0;
+        this.historique.add(distances.clone());
 
-		distances[this.numSommetSource] = 0;	
+        // Relaxations
+        for (int i = 0; i < nbSommets - 1; i++)
+        {
+            for (Arc arc : lstArcs)
+            {
+                int source = arc.getSource().getIndex();
+                int dest   = arc.getDest().getIndex();
+                int cout   = arc.getCout();
 
-		for (int i = 0; i < this.graphe.getNbSommets()-1; i++) 
-			for (int j = 0; j < this.graphe.getNbArcs(); j++) 
-			{
-				arc = lstArcs.get(j);
-				source = arc.getSource().getIndex();
-				dest   = arc.getDest().getIndex();
-				cout   = arc.getCout();
+                if (distances[source] != Integer.MAX_VALUE &&
+                    distances[source] + cout < distances[dest])
+                {
+                    distances[dest] = distances[source] + cout;
 
-				if (distances[source] != Integer.MAX_VALUE &&
-					distances[source] + cout < distances[dest])  
-				{
-					distances[dest] = distances[source] + cout;
-				}
-			}
-			
-		for (int j = 0; j < this.graphe.getNbArcs(); j++) 
-		{
-			arc = lstArcs.get(j);
-			source = arc.getSource().getIndex();
-			dest   = arc.getDest().getIndex();
-			cout   = arc.getCout();
+                    // Enregistrement de la relaxation
+                    this.relaxations.add(
+                        "It." + (i+1) + " | " +
+                        arc.getSource().getNom() + " -> " + arc.getDest().getNom() +
+                        " : d[" + arc.getDest().getNom() + "] = " + distances[dest]
+                    );
+                }
+            }
+            this.historique.add(distances.clone());
+        }
 
-			if (distances[source] != Integer.MAX_VALUE &&
-				distances[source] + cout < distances[dest])  
-			{
-				System.out.println("Le graphe contient des boucle négatives");
-			}
-		}
+        // Détection circuit absorbant
+        for (Arc arc : lstArcs)
+        {
+            int source = arc.getSource().getIndex();
+            int dest   = arc.getDest().getIndex();
+            int cout   = arc.getCout();
+            if (distances[source] != Integer.MAX_VALUE &&
+                distances[source] + cout < distances[dest])
+            {
+                this.circuitAbsorbant = true;
+                System.out.println("Circuit absorbant détecté !");
+            }
+        }
+    }
 
-		for (int i = 0; i < this.graphe.getNbSommets() ; i++) 
-		{
-			nomSommet = this.graphe.getSommetParIndice(i).getNom();
+    public String[][] getDonneesRelaxations()
+    {
+        String[][] donnees = new String[this.relaxations.size()][1];
+        for (int i = 0; i < this.relaxations.size(); i++)
+            donnees[i][0] = this.relaxations.get(i);
+        return donnees;
+    }
 
-			System.out.println("Le sommet " + nomSommet + " est à " + distances[i] + " de " + this.numSommetSource );
-		}	
-	}
+    public String[][] getDonneesIterations()
+    {
+        int        nbSommets = this.graphe.getNbSommets();
+        String[][] donnees   = new String[this.historique.size()][nbSommets + 1];
+        for (int i = 0; i < this.historique.size(); i++)
+        {
+            donnees[i][0] = (i == 0) ? "Initialisation" : "Itération " + i;
+            int[] dist = this.historique.get(i);
+            for (int j = 0; j < nbSommets; j++)
+                donnees[i][j + 1] = (dist[j] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(dist[j]);
+        }
+        return donnees;
+    }
 
-	public int[] getDistances() { return distances; }
-	public String[][] getDonneesB()
-	{
-        int[]      distB              = this.getDistances();
-        String[][] donneesBellmanFord = new String[this.graphe.getNbSommets()][2];
+    public String[] getColonnesIterations()
+    {
+        int      nbSommets = this.graphe.getNbSommets();
+        String[] colonnes  = new String[nbSommets + 1];
+        colonnes[0] = "";
+        for (int i = 0; i < nbSommets; i++)
+            colonnes[i + 1] = "d(" + this.graphe.getSommetParIndice(i).getNom() + ")";
+        return colonnes;
+    }
+
+    public boolean    hasCircuitAbsorbant() { return this.circuitAbsorbant; }
+    public int[]      getDistances()        { return this.distances; }
+
+    public String[][] getDonneesB()
+    {
+        String[][] donnees = new String[this.graphe.getNbSommets()][2];
         for (int i = 0; i < this.graphe.getNbSommets(); i++)
         {
-            donneesBellmanFord[i][0] = this.graphe.getSommetParIndice(i).getNom();
-            donneesBellmanFord[i][1] = (distB[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distB[i]);
+            donnees[i][0] = this.graphe.getSommetParIndice(i).getNom();
+            donnees[i][1] = (distances[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distances[i]);
         }
-		return donneesBellmanFord;
-	}
-
-
+        return donnees;
+    }
 }
