@@ -5,126 +5,126 @@ import java.util.HashSet;
 
 public class Dijkstra 
 {
-    private Graphe g;
-    private Sommet s;
+	private Graphe g;
+	private Sommet s;
 
-    private int[]  distances;
-    private ArrayList<int[]> historique;
+	private int[]  distances;
+	private ArrayList<int[]> historique;
 
-    // w c'est la matrice des coûts, deja effctuée dans Arc.getCout()
-    public Dijkstra(Graphe g, Sommet s)
-    {
-        this.g = g;
-        this.s = s;
-        this.historique = new ArrayList<>();
-    }
+	// w c'est la matrice des coûts, deja effctuée dans Arc.getCout()
+	public Dijkstra(Graphe g, Sommet s)
+	{
+		this.g = g;
+		this.s = s;
+		this.historique = new ArrayList<>();
+	}
 
-    public void algo()
-    {
-        distances = new int[this.g.getNbSommets()];
-        this.historique.clear();
+	public void algo()
+	{
+		distances = new int[this.g.getNbSommets()];
+		this.historique.clear();
 
-        // Initialisation
-        for (int i = 0; i < distances.length; i++)
-            distances[i] = Integer.MAX_VALUE;
+		// Initialisation
+		for (int i = 0; i < distances.length; i++)
+			distances[i] = Integer.MAX_VALUE;
 
-        distances[this.s.getIndex()] = 0;
-        this.historique.add(distances.clone());
-        // E = ensemble des sommets déjà visités
-        HashSet<Sommet> E = new HashSet<>();
+		distances[this.s.getIndex()] = 0;
+		this.historique.add(distances.clone());
+		// E = ensemble des sommets déjà visités
+		HashSet<Sommet> E = new HashSet<>();
 
-        // F = ensemble des sommets du graphe
-        ArrayList<Sommet> F = new ArrayList<>(  );
-        for (int i = 0; i < this.g.getNbSommets(); i++)
-            F.add(this.g.getSommetParIndice(i));
+		// F = ensemble des sommets du graphe
+		ArrayList<Sommet> F = new ArrayList<>(  );
+		for (int i = 0; i < this.g.getNbSommets(); i++)
+			F.add(this.g.getSommetParIndice(i));
 
-        while (!F.isEmpty())
-        {
-            // on choisit le sommet avec la plus petite valeur de d
-            Sommet u       = null;
-            int    minDist = Integer.MAX_VALUE;
-            for (Sommet v : F)
-            {
-                if (distances[v.getIndex()] < minDist)
-                {
-                    minDist = distances[v.getIndex()];
-                    u = v;
-                }
-            }
+		while (!F.isEmpty())
+		{
+			// on choisit le sommet avec la plus petite valeur de d
+			Sommet u       = null;
+			int    minDist = Integer.MAX_VALUE;
+			for (Sommet v : F)
+			{
+				if (distances[v.getIndex()] < minDist)
+				{
+					minDist = distances[v.getIndex()];
+					u = v;
+				}
+			}
 
-            if (u == null) break;
+			if (u == null) break;
 
-            F.remove(u);
-            E.add(u);
+			F.remove(u);
+			E.add(u);
 
-            for (Arc arc : this.g.getLstArcs())
-            {
-                Sommet voisin = null;
-                int cout = 0;
+			for (Arc arc : this.g.getLstArcs())
+			{
+				Sommet voisin = null;
+				int cout = 0;
 
-                if (arc.getSource().equals(u))
-                {
-                    voisin = arc.getDest();
-                    cout   = arc.getCout();
-                }
+				if (arc.getSource().equals(u))
+				{
+					voisin = arc.getDest();
+					cout   = arc.getCout();
+				}
 
-                if (voisin != null && F.contains(voisin))
-                {
-                    if (distances[u.getIndex()] != Integer.MAX_VALUE &&
-                        distances[voisin.getIndex()] > distances[u.getIndex()] + cout)
-                    {
-                        distances[voisin.getIndex()] = distances[u.getIndex()] + cout;
-                    }
-                }
-            }
+				if (voisin != null && F.contains(voisin))
+				{
+					if (distances[u.getIndex()] != Integer.MAX_VALUE &&
+						distances[voisin.getIndex()] > distances[u.getIndex()] + cout)
+					{
+						distances[voisin.getIndex()] = distances[u.getIndex()] + cout;
+					}
+				}
+			}
 
-            this.historique.add(distances.clone());
-        }
+			this.historique.add(distances.clone());
+		}
 
-        System.out.println("Distances depuis le sommet " + this.s.getNom() + " :");
-        for (int i = 0; i < this.g.getNbSommets(); i++)
-        {
-            Sommet v    = this.g.getSommetParIndice(i);
-            String dist = (distances[i] == Integer.MAX_VALUE) ? "+infini" : String.valueOf(distances[i]);
-            System.out.println("Le sommet " + v.getNom() + " est à " + dist + " de " + this.s.getNom() );
-        }
-    }
+		System.out.println("Distances depuis le sommet " + this.s.getNom() + " :");
+		for (int i = 0; i < this.g.getNbSommets(); i++)
+		{
+			Sommet v    = this.g.getSommetParIndice(i);
+			String dist = (distances[i] == Integer.MAX_VALUE) ? "+infini" : String.valueOf(distances[i]);
+			System.out.println("Le sommet " + v.getNom() + " est à " + dist + " de " + this.s.getNom() );
+		}
+	}
 
-    public int[] getDistances() { return distances; }
+	public int[] getDistances() { return distances; }
 
 	public String[][] getDonneesIterations()
 	{
-        int        nbSommets = this.g.getNbSommets();
-        String[][] donnees   = new String[this.historique.size()][nbSommets + 1];
-        for (int i = 0; i < this.historique.size(); i++)
-        {
-            donnees[i][0] = (i == 0) ? "Initialisation" : "Itération " + i;
-            int[] dist = this.historique.get(i);
-            for (int j = 0; j < nbSommets; j++)
-                donnees[i][j + 1] = (dist[j] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(dist[j]);
-        }
+		int        nbSommets = this.g.getNbSommets();
+		String[][] donnees   = new String[this.historique.size()][nbSommets + 1];
+		for (int i = 0; i < this.historique.size(); i++)
+		{
+			donnees[i][0] = (i == 0) ? "Initialisation" : "Itération " + i;
+			int[] dist = this.historique.get(i);
+			for (int j = 0; j < nbSommets; j++)
+				donnees[i][j + 1] = (dist[j] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(dist[j]);
+		}
 		return donnees;
 	}
 
 	public String[] getColonnesIterations()
 	{
-        int      nbSommets = this.g.getNbSommets();
-        String[] colonnes  = new String[nbSommets + 1];
-        colonnes[0] = "";
-        for (int i = 0; i < nbSommets; i++)
-            colonnes[i + 1] = "d(" + this.g.getSommetParIndice(i).getNom() + ")";
+		int      nbSommets = this.g.getNbSommets();
+		String[] colonnes  = new String[nbSommets + 1];
+		colonnes[0] = "";
+		for (int i = 0; i < nbSommets; i++)
+			colonnes[i + 1] = "d(" + this.g.getSommetParIndice(i).getNom() + ")";
 		return colonnes;
 	}
 
 	public String[][] getDonneesD()
 	{
-        int[]      distD           = this.getDistances();
-        String[][] donneesDijkstra = new String[this.g.getNbSommets()][2];
-        for (int i = 0; i < this.g.getNbSommets(); i++)
-        {
-            donneesDijkstra[i][0] = this.g.getSommetParIndice(i).getNom();
-            donneesDijkstra[i][1] = (distD[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distD[i]);
-        }
+		int[]      distD           = this.getDistances();
+		String[][] donneesDijkstra = new String[this.g.getNbSommets()][2];
+		for (int i = 0; i < this.g.getNbSommets(); i++)
+		{
+			donneesDijkstra[i][0] = this.g.getSommetParIndice(i).getNom();
+			donneesDijkstra[i][1] = (distD[i] == Integer.MAX_VALUE) ? "+∞" : String.valueOf(distD[i]);
+		}
 		return donneesDijkstra;
 	}
 }
