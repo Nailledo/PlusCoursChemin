@@ -5,6 +5,9 @@ import plusCoursChemin.Controleur;
 
 public class FrameGraphe extends JFrame 
 {
+	public static final int ALGO_DIJKSTRA = 0;
+	public static final int ALGO_BELLMAN  = 1;
+
 	private Controleur ctrl;
 
 	public FrameGraphe(Controleur ctrl)
@@ -46,5 +49,25 @@ public class FrameGraphe extends JFrame
 		menu.add(btnQuitter);
 		menuBar.add(menu);
 		return menuBar;
+	}
+
+	public static int demanderChoixAlgorithme()
+	{
+		Object[] options = { "Dijkstra", "Bellman-Ford" };
+		int choix = JOptionPane.showOptionDialog(
+			null,
+			"Choisissez l'algorithme de plus court chemin :",
+			"Choix de l'algorithme",
+			JOptionPane.DEFAULT_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+			null,
+			options,
+			options[0]
+		);
+
+		if (choix != ALGO_BELLMAN)
+			return ALGO_DIJKSTRA;
+
+		return ALGO_BELLMAN;
 	}
 }

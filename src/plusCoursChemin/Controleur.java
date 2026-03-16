@@ -44,10 +44,22 @@ public class Controleur
 		}
 		else
 		{
-			System.out.println("Aucun arc négatif → Dijkstra");
-			this.dijkstra = new Dijkstra(this.graphe, this.graphe.getSommetParIndice(0));
-			this.dijkstra.algo();
-			this.bellmanFord = null;
+			int choix = FrameGraphe.demanderChoixAlgorithme();
+
+			if (choix == FrameGraphe.ALGO_BELLMAN)
+			{
+				System.out.println("Aucun arc négatif --> Bellman-Ford");
+				this.bellmanFord = new BellmanFord(this.graphe, 0);
+				this.bellmanFord.algo();
+				this.dijkstra = null;
+			}
+			else
+			{
+				System.out.println("Aucun arc négatif --> Dijkstra");
+				this.dijkstra = new Dijkstra(this.graphe, this.graphe.getSommetParIndice(0));
+				this.dijkstra.algo();
+				this.bellmanFord = null;
+			}
 		}
 	}
 
