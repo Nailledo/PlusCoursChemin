@@ -1,3 +1,7 @@
+# Informations du graphe :
+# Espacé par une tabulation !
+# Le premier noeud sera décidé comme le point de départ.
+# NOEUD VOISIN DISTANCE
 A	B	4
 A	C	2
 C	B	1

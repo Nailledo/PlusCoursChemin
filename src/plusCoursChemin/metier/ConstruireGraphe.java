@@ -28,6 +28,8 @@ public class ConstruireGraphe
 			while (sc.hasNextLine()) 
 			{
 				ligne = sc.nextLine();
+				if ( ligne.startsWith("#") )
+					continue;
 
 				if (ligne.trim().isEmpty())
 					continue;
