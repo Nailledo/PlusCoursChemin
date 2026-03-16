@@ -10,4 +10,3 @@ if !ERRORLEVEL! EQU 0 (
 ) else (
     echo Erreur de compilation!
 )
-pause

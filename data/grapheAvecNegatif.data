@@ -2,8 +2,8 @@
 # Espacé par une tabulation !
 # Le premier noeud sera décidé comme le point de départ.
 # NOEUD VOISIN DISTANCE
-S	B	6
-S	C	4
+A	B	6
+A	C	4
 C	B	-2
 B	D	3
 C	D	8
