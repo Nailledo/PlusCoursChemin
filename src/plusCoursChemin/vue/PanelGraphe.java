@@ -10,6 +10,7 @@ public class PanelGraphe extends JPanel
 	public PanelGraphe(Controleur ctrl)
 	{
 		this.setLayout(new BorderLayout(10, 10));
+		this.add(this.creerPanelControle(ctrl),                BorderLayout.NORTH);
 		this.add((JComponent) new GrapheStream(ctrl).display(), BorderLayout.CENTER);
 		this.add(this.creerPanelTables(ctrl),                   BorderLayout.EAST);
 
@@ -31,10 +32,36 @@ public class PanelGraphe extends JPanel
 			this.add(panelSud, BorderLayout.SOUTH);
 		}
 
-		if ( ctrl.aCircuitAbsorbant() )
+	}
+
+	private JPanel creerPanelControle(Controleur ctrl)
+	{
+		JPanel panelGlobal = new JPanel(new BorderLayout(5, 5));
+
+		JPanel panelControles = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelControles.add(new JLabel("Sommet source :"));
+
+		String[] nomsSommets = ctrl.getNomsSommets();
+		JComboBox<String> comboSommets = new JComboBox<>(nomsSommets);
+		comboSommets.setSelectedIndex(ctrl.getSommetSourceIndex());
+		panelControles.add(comboSommets);
+
+		JButton btnRecalculer = new JButton("Recalculer");
+		btnRecalculer.addActionListener(e ->
 		{
-			this.add ( new JLabel("Circuit absorbant détectée ! "), BorderLayout.NORTH );
-		}
+			ctrl.recalculerDepuisSource(comboSommets.getSelectedIndex());
+			Window fenetre = SwingUtilities.getWindowAncestor(this);
+			if (fenetre instanceof FrameGraphe)
+				((FrameGraphe) fenetre).rafraichirContenu();
+		});
+		panelControles.add(btnRecalculer);
+
+		panelGlobal.add(panelControles, BorderLayout.NORTH);
+
+		if (ctrl.aCircuitAbsorbant())
+			panelGlobal.add(new JLabel("Circuit absorbant détectée !"), BorderLayout.SOUTH);
+
+		return panelGlobal;
 	}
 
 	private JPanel creerPanelTables(Controleur ctrl)

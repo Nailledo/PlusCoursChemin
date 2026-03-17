@@ -18,8 +18,16 @@ public class FrameGraphe extends JFrame
 		this.setSize(1000, 600);
 		this.setLocationRelativeTo(null);
 		this.setJMenuBar(this.creerMenuBar());
-		this.add(new PanelGraphe(this.ctrl));
+		this.rafraichirContenu();
 		this.setVisible(true);
+	}
+
+	public void rafraichirContenu()
+	{
+		this.getContentPane().removeAll();
+		this.add(new PanelGraphe(this.ctrl));
+		this.revalidate();
+		this.repaint();
 	}
 
 	private JMenuBar creerMenuBar()
@@ -35,10 +43,7 @@ public class FrameGraphe extends JFrame
 			if (chemin != null)
 			{
 				this.ctrl.init(chemin);
-				this.getContentPane().removeAll();
-				this.add(new PanelGraphe(this.ctrl));
-				this.revalidate();
-				this.repaint();
+				this.rafraichirContenu();
 			}
 		});
 

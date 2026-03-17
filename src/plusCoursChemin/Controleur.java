@@ -16,9 +16,11 @@ public class Controleur
 	private BellmanFord bellmanFord;
 	private Dijkstra    dijkstra;
 	private FrameGraphe frame;
+	private int         sommetSourceIndex;
 
 	public Controleur()
 	{
+		this.sommetSourceIndex = 0;
 		String chemin = this.choisirFichier();
 		if (chemin != null)
 		{
@@ -30,6 +32,7 @@ public class Controleur
 	public void init(String chemin)
 	{
 		this.graphe = ConstruireGraphe.InitGraphe(chemin);
+		this.sommetSourceIndex = 0;
 		this.lancerAlgo();
 	}
 
@@ -38,7 +41,7 @@ public class Controleur
 		if (this.aArcNegatif())
 		{
 			System.out.println("Arc négatif détecté → Bellman-Ford");
-			this.bellmanFord = new BellmanFord(this.graphe, 0);
+			this.bellmanFord = new BellmanFord(this.graphe, this.sommetSourceIndex);
 			this.bellmanFord.algo();
 			this.dijkstra = null;
 		}
@@ -49,19 +52,44 @@ public class Controleur
 			if (choix == FrameGraphe.ALGO_BELLMAN)
 			{
 				System.out.println("Aucun arc négatif --> Bellman-Ford");
-				this.bellmanFord = new BellmanFord(this.graphe, 0);
+				this.bellmanFord = new BellmanFord(this.graphe, this.sommetSourceIndex);
 				this.bellmanFord.algo();
 				this.dijkstra = null;
 			}
 			else
 			{
 				System.out.println("Aucun arc négatif --> Dijkstra");
-				this.dijkstra = new Dijkstra(this.graphe, this.graphe.getSommetParIndice(0));
+				this.dijkstra = new Dijkstra(this.graphe, this.graphe.getSommetParIndice(this.sommetSourceIndex));
 				this.dijkstra.algo();
 				this.bellmanFord = null;
 			}
 		}
 	}
+
+	public void recalculerDepuisSource(int sourceIndex)
+	{
+		if (this.graphe == null)
+			return;
+
+		if (sourceIndex < 0 || sourceIndex >= this.graphe.getNbSommets())
+			return;
+
+		this.sommetSourceIndex = sourceIndex;
+		this.lancerAlgo();
+	}
+
+	public String[] getNomsSommets()
+	{
+		if (this.graphe == null)
+			return new String[0];
+
+		String[] noms = new String[this.graphe.getNbSommets()];
+		for (int i = 0; i < this.graphe.getNbSommets(); i++)
+			noms[i] = this.graphe.getSommetParIndice(i).getNom();
+		return noms;
+	}
+
+	public int getSommetSourceIndex() { return this.sommetSourceIndex; }
 
 	public String choisirFichier()
 	{
