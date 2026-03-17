@@ -1,0 +1,22 @@
+# NOEUD VOISIN DISTANCE
+a	b	3
+a	c	6
+b	d	4
+b	e	11
+c	e	2
+c	f	9
+d	g	5
+e	g	3
+e	h	7
+f	h	4
+g	i	6
+h	i	2
+i	j	3
+j	k	2
+k	l	4
+g	l	20
+b	l	30
+d	h	8
+f	j	5
+a	l	50
+

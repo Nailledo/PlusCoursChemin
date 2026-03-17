@@ -39,6 +39,7 @@ public class BellmanFord
 		for (int i = 0; i < nbSommets - 1; i++)
 		{
 			int[] nouvellesDistances = distances.clone();
+			boolean modifié = false;
 
 			for (Arc arc : lstArcs)
 			{
@@ -50,6 +51,7 @@ public class BellmanFord
 					distances[source] + cout < nouvellesDistances[dest])
 				{
 					nouvellesDistances[dest] = distances[source] + cout;
+					modifié = true;
 
 					// Enregistrement de la relaxation
 					this.relaxations.add(
@@ -62,6 +64,13 @@ public class BellmanFord
 
 			distances = nouvellesDistances;
 			this.historique.add(distances.clone());
+
+			// Si aucune modification, l'algorithme a convergé
+			if (!modifié)
+			{
+				System.out.println("Convergence atteinte à l'itération " + (i+1) + " (pas de modification)");
+				break;
+			}
 		}
 
 		// Détection circuit absorbant
