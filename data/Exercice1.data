@@ -1,0 +1,10 @@
+# NOEUD VOISIN DISTANCE
+S	A	3
+S	C	5
+A	C	1
+A	B	5
+B	D	1
+C	B	5
+C	D	5
+C	A	1
+C	S	3
