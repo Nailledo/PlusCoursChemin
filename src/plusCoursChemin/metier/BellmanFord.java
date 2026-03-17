@@ -8,6 +8,8 @@ public class BellmanFord
 	private int               numSommetSource;
 	private int[]             distances;
 	private boolean           circuitAbsorbant;
+
+	// Pour sauvegarder l'historique et l'ordre des relaxations
 	private ArrayList<int[]>  historique;
 	private ArrayList<String> relaxations;
 
@@ -29,6 +31,7 @@ public class BellmanFord
 		distances = new int[nbSommets];
 		for (int i = 0; i < nbSommets; i++)
 			distances[i] = Integer.MAX_VALUE;
+		
 		distances[this.numSommetSource] = 0;
 		this.historique.add(distances.clone());
 

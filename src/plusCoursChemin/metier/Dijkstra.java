@@ -30,6 +30,7 @@ public class Dijkstra
 
 		distances[this.s.getIndex()] = 0;
 		this.historique.add(distances.clone());
+		
 		// E = ensemble des sommets déjà visités
 		HashSet<Sommet> E = new HashSet<>();
 

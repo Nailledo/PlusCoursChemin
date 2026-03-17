@@ -6,7 +6,6 @@ import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
-import org.graphstream.ui.view.util.DefaultMouseManager;
 
 import java.util.ArrayList;
 
@@ -15,27 +14,30 @@ public class GrapheStream
 	private Graph      graph;
 	private Controleur ctrl;
 
-	// --- Définition du style CSS pour GraphStream ---
+	// Définition du style CSS pour GraphStream
 	private String styleSheet = 
 		"node {" +
-		"   text-size: 18px;" +       // Police plus grande pour les sommets
-		"   text-style: bold;" +      // Texte en gras
-		"   size: 15px;" +            // Taille du point grossie un peu pour équilibrer
+		"   text-size: 18px;" +   
+		"   text-alignment:center; " +    
+		"   text-style: bold;" +      
+		"   size: 15px;" +           
 		"}" +
 		"edge {" +
-		"   text-size: 16px;" +       // Police plus grande pour les poids des arcs
-		"   text-style: bold;" +      // Texte en gras
-		"   arrow-size: 12px, 8px;" + // Flèche plus visible sur les arcs orientés
+		"   text-size: 16px;" +     
+		"   text-style: bold;" +      
 		"}";
 
 	public GrapheStream(Controleur ctrl)
 	{
+		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		System.setProperty("org.graphstream.ui", "swing");
 		this.ctrl  = ctrl;
 		this.graph = new SingleGraph("Graphe");
 		
 		// Application de la feuille de style au graphe
 		this.graph.setAttribute("ui.stylesheet", styleSheet);
+		this.graph.addAttribute("ui.quality");
+		this.graph.addAttribute("ui.antialias");
 		
 		this.construireGraphe();
 	}
@@ -67,7 +69,7 @@ public class GrapheStream
 
 	public View display()
 	{
-		Viewer viewer = new Viewer(this.graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+		Viewer viewer = new Viewer(this.graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		viewer.enableAutoLayout();
 		View view = viewer.addDefaultView(false);
 		return view;
