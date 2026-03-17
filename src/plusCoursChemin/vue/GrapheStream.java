@@ -17,8 +17,9 @@ public class GrapheStream
 	// Définition du style CSS pour GraphStream
 	private String styleSheet = 
 		"node {" +
-		"   text-size: 18px;" +   
-		"   text-alignment:center; " +    
+		"   text-size: 14px;" +   
+		"   text-alignment:center; " + 
+		"   text-color:white;  "  +  
 		"   text-style: bold;" +      
 		"   size: 15px;" +           
 		"}" +
